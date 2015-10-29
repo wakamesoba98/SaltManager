@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">SaltManager</string>
+    <string name="action_pick_date">日付を選択</string>
+    <string name="action_settings">設定</string>
+    <string name="add">追加</string>
+    <string name="label_g">g</string>
+    <string name="label_mg">mg</string>
+    <string name="label_date">日付</string>
+    <string name="label_total_salt">総塩分量</string>
+    <string name="label_food">食品名</string>
+    <string name="label_sodium">ナトリウム</string>
+    <string name="label_salt">食塩相当量</string>
+    <string name="toast_error">値が不正です。</string>
+</resources>
