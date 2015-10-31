@@ -14,6 +14,7 @@ import net.wakamesoba98.saltmanager.R;
 import net.wakamesoba98.saltmanager.database.DatabaseManager;
 import net.wakamesoba98.saltmanager.view.fragment.MainFragment;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -24,7 +25,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     public static final int REQUEST_ADD = 1;
     private MainFragment fragment;
     private Calendar calendar;
-    private SimpleDateFormat sdf;
+    private DateFormat sdf;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +88,16 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         switch (id) {
             case R.id.action_settings:
                 return true;
+
+            case R.id.action_chart:
+                Intent intent = new Intent(this, ChartActivity.class);
+                Calendar now = Calendar.getInstance();
+                Calendar twoWeekAgo = Calendar.getInstance();
+                twoWeekAgo.add(Calendar.WEEK_OF_MONTH, -1);
+                intent.putExtra("start", sdf.format(twoWeekAgo.getTime()));
+                intent.putExtra("end", sdf.format(now.getTime()));
+                startActivity(intent);
+                break;
 
             case R.id.action_pick_date:
                 showDatePicker();

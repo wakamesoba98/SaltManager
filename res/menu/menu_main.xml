@@ -9,6 +9,12 @@
           android:orderInCategory="100"
           app:showAsAction="ifRoom"/>
 
+    <item android:id="@+id/action_chart"
+          android:title="@string/action_chart"
+          android:icon="@drawable/ic_assessment_white"
+          android:orderInCategory="100"
+          app:showAsAction="never"/>
+
     <item android:id="@+id/action_settings"
           android:title="@string/action_settings"
           android:orderInCategory="100"

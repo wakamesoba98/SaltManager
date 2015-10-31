@@ -1,5 +1,7 @@
 package net.wakamesoba98.saltmanager.database;
 
+import net.wakamesoba98.saltmanager.util.SodiumConverter;
+
 public class SodiumData {
     private String date;
     private String food;
@@ -11,11 +13,7 @@ public class SodiumData {
         this.date = date;
         this.food = food;
         this.sodium = sodiumValue;
-        this.salt = toSalt(sodiumValue);
-    }
-
-    private double toSalt(int sodium) {
-        return sodium * 2.54 / 1000;
+        this.salt = SodiumConverter.toSalt(sodiumValue);
     }
 
     public String getDate() {

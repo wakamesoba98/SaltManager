@@ -14,6 +14,7 @@ import net.wakamesoba98.saltmanager.database.SodiumData;
 import net.wakamesoba98.saltmanager.database.SodiumDatabase;
 import net.wakamesoba98.saltmanager.view.activity.MainActivity;
 
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -44,7 +45,7 @@ public class MainFragment extends Fragment {
                 new int[] {android.R.id.text1, android.R.id.text2}
         );
 
-        SimpleDateFormat sdf = new SimpleDateFormat(DatabaseManager.DATE_FORMAT, Locale.getDefault());
+        DateFormat sdf = new SimpleDateFormat(DatabaseManager.DATE_FORMAT, Locale.getDefault());
 
         SodiumDatabase database = new SodiumDatabase(getActivity());
         database.openDatabase();

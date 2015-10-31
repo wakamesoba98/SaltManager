@@ -66,13 +66,20 @@ public class SodiumDatabase implements DatabaseController {
         database.deleteAll();
     }
 
-    public List<SodiumData> getDataFromDate(String value) {
-        List<String[]> strList = getData("date", value);
+    private List<SodiumData> createDataList(List<String[]> strList) {
         List<SodiumData> sodiumList = new ArrayList<>();
         for (String[] array : strList) {
             SodiumData data = new SodiumData(array[1], array[2], array[3]);
             sodiumList.add(data);
         }
         return sodiumList;
+    }
+
+    public List<SodiumData> getDataFromDate(String value) {
+        return createDataList(getData("date", value));
+    }
+
+    public List<SodiumData> getDataFromPeriod(String start, String end) {
+        return createDataList(database.readBetween("date", start, end));
     }
 }

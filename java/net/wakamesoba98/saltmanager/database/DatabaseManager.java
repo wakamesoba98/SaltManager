@@ -68,15 +68,22 @@ public class DatabaseManager extends ContextWrapper {
         createTableIfNotExists();
     }
 
-    // データベースクローズ
     public void close() {
         mSQLiteDatabase.close();
         mSQLiteDatabase = null;
     }
 
-    // データ読込
+    public List<String[]> readBetween(String key, String start, String end) {
+        return read(mSQLiteDatabase.query(mTableName, null, key + " BETWEEN ? AND ?",
+                                          new String[]{start, end}, null, null, null));
+    }
+
     public List<String[]> read(String key, String value) {
-        Cursor cursor = mSQLiteDatabase.query(mTableName, null, whereClause(key), whereArgs(value), null, null, null);
+        return read(mSQLiteDatabase.query(mTableName, null, whereClause(key),
+                                          whereArgs(value), null, null, null));
+    }
+
+    private List<String[]> read(Cursor cursor) {
         boolean isEof = cursor.moveToFirst();
         List<String[]> dataList = new ArrayList<>();
 
@@ -94,7 +101,6 @@ public class DatabaseManager extends ContextWrapper {
         return dataList;
     }
 
-    // データ追加
     public void insert(String[] data) {
         ContentValues values = new ContentValues();
 
@@ -105,7 +111,6 @@ public class DatabaseManager extends ContextWrapper {
         mSQLiteDatabase.insert(mTableName, null, values);
     }
 
-    // データ更新
     public void update(String[] data) {
         ContentValues values = new ContentValues();
 
@@ -116,17 +121,14 @@ public class DatabaseManager extends ContextWrapper {
         mSQLiteDatabase.update(mTableName, values, whereClause(mColumns[0][0]), whereArgs(data[0]));
     }
 
-    // 全件削除
     public void deleteAll() {
         mSQLiteDatabase.delete(mTableName, null, null);
     }
 
-    // 1件削除
     public void delete(String key, String value) {
         mSQLiteDatabase.delete(mTableName, whereClause(key), whereArgs(value));
     }
 
-    // データ件数取得
     public int getCount() {
         Cursor cursor;
         cursor = mSQLiteDatabase.query(mTableName, null, null, null, null, null, null);
@@ -164,7 +166,6 @@ public class DatabaseManager extends ContextWrapper {
 
         @Override
         public void onCreate(SQLiteDatabase db) {
-
         }
 
         @Override

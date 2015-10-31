@@ -15,8 +15,11 @@ import android.widget.Toast;
 import net.wakamesoba98.saltmanager.R;
 import net.wakamesoba98.saltmanager.database.DatabaseManager;
 import net.wakamesoba98.saltmanager.database.SodiumDatabase;
+import net.wakamesoba98.saltmanager.util.SodiumConverter;
 
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -26,7 +29,9 @@ public class InputActivity extends AppCompatActivity {
     private EditText textSodium;
     private EditText textSalt;
     private DecimalFormat df;
+    private DateFormat sdf;
     private FocusHolder focusHolder;
+    private Calendar calendar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +52,14 @@ public class InputActivity extends AppCompatActivity {
             String date = intent.getStringExtra("date");
             TextView textDate = (TextView) findViewById(R.id.textViewDate);
             textDate.setText(date);
+
+            sdf = new SimpleDateFormat(DatabaseManager.DATE_FORMAT, Locale.getDefault());
+            calendar = Calendar.getInstance();
+            try {
+                calendar.setTime(sdf.parse(date));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -71,7 +84,7 @@ public class InputActivity extends AppCompatActivity {
     private void calcSodium(String text) {
         try {
             double salt = Double.parseDouble(text);
-            int sodium = (int) (salt / 2.54f * 1000);
+            int sodium = SodiumConverter.toSodium(salt);
             textSodium.setText(String.valueOf(sodium));
         } catch (NumberFormatException e) {
 
@@ -81,7 +94,7 @@ public class InputActivity extends AppCompatActivity {
     private void calcSalt(String text) {
         try {
             int sodium = Integer.parseInt(text);
-            double salt = sodium * 2.54 / 1000;
+            double salt = SodiumConverter.toSalt(sodium);
             textSalt.setText(df.format(salt));
         } catch (NumberFormatException e) {
 
@@ -92,9 +105,6 @@ public class InputActivity extends AppCompatActivity {
         EditText textFood = (EditText) findViewById(R.id.editTextFood);
 
         try {
-            Calendar calendar = Calendar.getInstance();
-            SimpleDateFormat sdf = new SimpleDateFormat(DatabaseManager.DATE_FORMAT, Locale.getDefault());
-
             int sodium = Integer.parseInt(textSodium.getText().toString());
             String food = textFood.getText().toString();
             String date = sdf.format(calendar.getTime());

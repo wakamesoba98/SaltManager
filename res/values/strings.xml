@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">SaltManager</string>
     <string name="action_pick_date">日付を選択</string>
+    <string name="action_chart">グラフ</string>
     <string name="action_settings">設定</string>
     <string name="add">追加</string>
     <string name="label_g">g</string>
