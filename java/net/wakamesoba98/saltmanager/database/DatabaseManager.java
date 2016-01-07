@@ -74,13 +74,23 @@ public class DatabaseManager extends ContextWrapper {
     }
 
     public List<String[]> readBetween(String key, String start, String end) {
-        return read(mSQLiteDatabase.query(mTableName, null, key + " BETWEEN ? AND ?",
-                                          new String[]{start, end}, null, null, null));
+        return read(mSQLiteDatabase.query(mTableName,
+                                          null,
+                                          key + " BETWEEN ? AND ?",
+                                          new String[]{start, end},
+                                          null,
+                                          null,
+                                          null));
     }
 
     public List<String[]> read(String key, String value) {
-        return read(mSQLiteDatabase.query(mTableName, null, whereClause(key),
-                                          whereArgs(value), null, null, null));
+        return read(mSQLiteDatabase.query(mTableName,
+                                          null,
+                                          whereClause(key),
+                                          whereArgs(value),
+                                          null,
+                                          null,
+                                          null));
     }
 
     private List<String[]> read(Cursor cursor) {
@@ -111,22 +121,22 @@ public class DatabaseManager extends ContextWrapper {
         mSQLiteDatabase.insert(mTableName, null, values);
     }
 
-    public void update(String[] data) {
+    public void update(int id, String[] data) {
         ContentValues values = new ContentValues();
 
         for (int i=0; i<mColumns.length; i++) {
             values.put(mColumns[i][0], data[i]);
         }
 
-        mSQLiteDatabase.update(mTableName, values, whereClause(mColumns[0][0]), whereArgs(data[0]));
+        mSQLiteDatabase.update(mTableName, values, whereClause(COL_ID), whereArgs(String.valueOf(id)));
     }
 
     public void deleteAll() {
         mSQLiteDatabase.delete(mTableName, null, null);
     }
 
-    public void delete(String key, String value) {
-        mSQLiteDatabase.delete(mTableName, whereClause(key), whereArgs(value));
+    public void delete(int id) {
+        mSQLiteDatabase.delete(mTableName, whereClause(COL_ID), whereArgs(String.valueOf(id)));
     }
 
     public int getCount() {

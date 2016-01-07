@@ -2,7 +2,6 @@ package net.wakamesoba98.saltmanager.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Looper;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import com.github.mikephil.charting.animation.Easing;
@@ -16,43 +15,53 @@ import net.wakamesoba98.saltmanager.database.DatabaseManager;
 import net.wakamesoba98.saltmanager.database.SodiumData;
 import net.wakamesoba98.saltmanager.database.SodiumDatabase;
 import net.wakamesoba98.saltmanager.handler.UiHandler;
+import net.wakamesoba98.saltmanager.preferences.PreferenceUtil;
+import net.wakamesoba98.saltmanager.preferences.key.EnumPrefs;
 import net.wakamesoba98.saltmanager.util.SodiumConverter;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.logging.Handler;
 
 public class ChartActivity extends AppCompatActivity {
 
-    private BarChart chart;
+    private int threshold;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart);
 
-        chart = (BarChart) findViewById(R.id.chart);
+        BarChart chart = (BarChart) findViewById(R.id.chart);
         chart.getAxisRight().setEnabled(false);
         chart.getAxisLeft().setStartAtZero(true);
+        chart.setDoubleTapToZoomEnabled(false);
+        chart.setPinchZoom(false);
+        chart.setDrawValuesForWholeStack(false);
         chart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
         chart.setDescription("");
+
+        PreferenceUtil prefs = new PreferenceUtil(this);
+        threshold = prefs.getIntPreference(EnumPrefs.SALT_THRESHOLD);
 
         Intent intent = getIntent();
         if (intent != null) {
             String start = intent.getStringExtra("start");
             String end = intent.getStringExtra("end");
-            entry(start, end);
+            entry(chart, start, end);
         }
     }
 
-    private void entry(String start, String end) {
+    private List<SodiumData> loadDatabase(String start, String end) {
         SodiumDatabase database = new SodiumDatabase(this);
         database.openDatabase();
         List<SodiumData> sodiumDataList = database.getDataFromPeriod(start, end);
         database.closeDatabase();
+        return sodiumDataList;
+    }
 
+    private List<String> createDateList(String start, String end) {
         DateFormat sdf = new SimpleDateFormat(DatabaseManager.DATE_FORMAT, Locale.getDefault());
         Calendar calendar = Calendar.getInstance();
         try {
@@ -61,7 +70,7 @@ public class ChartActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         if (calendar == null) {
-            return;
+            return null;
         }
 
         List<String> dateList = new ArrayList<>();
@@ -73,50 +82,42 @@ public class ChartActivity extends AppCompatActivity {
             dateList.add(dateStr);
         }
 
-        Map<String, Integer> map = new HashMap<>();
+        return dateList;
+    }
+
+    private Map<String, Integer> createDateSodiumMap(List<SodiumData> sodiumDataList) {
+        Map<String, Integer> dateSodiumMap = new HashMap<>();
         for (SodiumData sodiumData : sodiumDataList) {
             String date = sodiumData.getDate();
             int sodium = sodiumData.getSodium();
-            Integer value = map.get(date);
+            Integer value = dateSodiumMap.get(date);
             if (value == null) {
-                map.put(date, sodium);
+                dateSodiumMap.put(date, sodium);
             } else {
-                map.put(date, sodium + value);
+                dateSodiumMap.put(date, sodium + value);
             }
         }
+        return dateSodiumMap;
+    }
 
-        List<BarEntry> values = new ArrayList<>();
-        List<BarEntry> dummyValues = new ArrayList<>();
-        float max = 0;
-        for (int i = 0; i < dateList.size(); i++) {
-            Integer value = map.get(dateList.get(i));
-            if (value == null) {
-                value = 0;
-            }
-            float salt = (float) SodiumConverter.toSalt(value);
-            values.add(new BarEntry(salt, i));
-            dummyValues.add(new BarEntry(0.0f, i));
-            if (max < salt) {
-                max = salt;
-            }
-        }
-
-        BarDataSet barDataSet = new BarDataSet(values, "塩分量");
-        BarDataSet dummyBarDataSet = new BarDataSet(dummyValues, "塩分量");
-        barDataSet.setColor(ContextCompat.getColor(this, (R.color.primary)));
-
+    private List<BarDataSet> createBarDataSets(List<BarEntry> values) {
+        BarDataSet barDataSet = new BarDataSet(values, "");
+        barDataSet.setColors(new int[] {
+                ContextCompat.getColor(this, (R.color.accent)),
+                ContextCompat.getColor(this, (R.color.primary))
+        });
+        barDataSet.setStackLabels(new String[] {
+                getResources().getString(R.string.label_stack_over),
+                getResources().getString(R.string.label_stack_salt)
+        });
         List<BarDataSet> sets = new ArrayList<>();
-        List<BarDataSet> dummySets = new ArrayList<>();
         sets.add(barDataSet);
-        dummySets.add(dummyBarDataSet);
+        return sets;
+    }
 
-        final BarData data = new BarData(dateList, sets);
-        BarData dummyData = new BarData(dateList, dummySets);
-        chart.getAxisLeft().setAxisMaxValue(max + 1.0f);
-        chart.getAxisLeft().setAxisMinValue(0f);
-        chart.setData(dummyData);
+    private void startAnimation(final BarChart chart, final BarData data, BarData dummy) {
+        chart.setData(dummy);
         chart.invalidate();
-
         new Thread(new Runnable() {
             public void run() {
                 try {
@@ -133,5 +134,42 @@ public class ChartActivity extends AppCompatActivity {
                 }.post();
             }
         }).start();
+    }
+
+    private void entry(BarChart chart, String start, String end) {
+        List<String> dateList = createDateList(start, end);
+        if (dateList == null) {
+            return;
+        }
+
+        List<SodiumData> sodiumDataList = loadDatabase(start, end);
+        Map<String, Integer> dateSodiumMap = createDateSodiumMap(sodiumDataList);
+
+        List<BarEntry> values = new ArrayList<>();
+        List<BarEntry> dummyValues = new ArrayList<>();
+        float max = 0;
+        for (int i = 0; i < dateList.size(); i++) {
+            Integer sodium = dateSodiumMap.get(dateList.get(i));
+            if (sodium == null) {
+                sodium = 0;
+            }
+            float salt = (float) SodiumConverter.toSalt(sodium);
+            if (salt > threshold) {
+                values.add(new BarEntry(new float[]{salt - threshold, threshold}, i));
+            } else {
+                values.add(new BarEntry(new float[]{0.0f, salt}, i));
+            }
+            dummyValues.add(new BarEntry(new float[]{0.0f, 0,0f}, i));
+            if (max < salt) {
+                max = salt;
+            }
+        }
+
+        BarData data = new BarData(dateList, createBarDataSets(values));
+        BarData dummyData = new BarData(dateList, createBarDataSets(dummyValues));
+
+        chart.getAxisLeft().setAxisMaxValue(max + 1.0f);
+        chart.getAxisLeft().setAxisMinValue(0f);
+        startAnimation(chart, data, dummyData);
     }
 }

@@ -46,8 +46,8 @@ public class SodiumDatabase implements DatabaseController {
         database.insert(data);
     }
 
-    public void update(String[] data) {
-        database.update(data);
+    public void update(int id, String[] data) {
+        database.update(id, data);
     }
 
     public List<String[]> getData(String key, String value) {
@@ -58,8 +58,8 @@ public class SodiumDatabase implements DatabaseController {
         return database.read(null, null);
     }
 
-    public void deleteData(String key, String value) {
-        database.delete(key, value);
+    public void delete(int id) {
+        database.delete(id);
     }
 
     public void deleteAllData() {
@@ -69,10 +69,14 @@ public class SodiumDatabase implements DatabaseController {
     private List<SodiumData> createDataList(List<String[]> strList) {
         List<SodiumData> sodiumList = new ArrayList<>();
         for (String[] array : strList) {
-            SodiumData data = new SodiumData(array[1], array[2], array[3]);
+            SodiumData data = new SodiumData(Integer.parseInt(array[0]), array[1], array[2], Integer.parseInt(array[3]));
             sodiumList.add(data);
         }
         return sodiumList;
+    }
+
+    public SodiumData getDataFromId(int id) {
+        return createDataList(getData("_id", String.valueOf(id))).get(0);
     }
 
     public List<SodiumData> getDataFromDate(String value) {

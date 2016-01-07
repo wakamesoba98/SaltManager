@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <PreferenceCategory
+            android:key="pref_category_settings"
+            android:title="@string/preference_settings">
+
+        <EditTextPreference
+                android:key="pref_salt_threshold"
+                android:title="@string/preference_salt_threshold"
+                android:dialogTitle="@string/preference_salt_threshold"
+                android:inputType="number"
+                android:maxLength="2"
+                android:defaultValue="6" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+            android:key="pref_category_about"
+            android:title="@string/preference_about_this_app">
+
+        <Preference
+                android:key="pref_about"
+                android:summary="by wakamesoba98" />
+
+        <Preference
+                android:key="pref_open_source_licences"
+                android:title="@string/preference_open_source_licenses">
+
+            <intent android:action="android.intent.action.VIEW"
+                    android:targetClass="net.wakamesoba98.saltmanager.view.activity.LicenseActivity"
+                    android:targetPackage="net.wakamesoba98.saltmanager"/>
+
+        </Preference>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

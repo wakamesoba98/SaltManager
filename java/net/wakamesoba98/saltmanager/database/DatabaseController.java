@@ -13,13 +13,13 @@ public interface DatabaseController {
 
     void insert(String[] data);
 
-    void update(String[] data);
+    void update(int id, String[] data);
 
     List<String[]> getData(String key, String value);
 
     List<String[]> getAllData();
 
-    void deleteData(String key, String value);
+    void delete(int id);
 
     void deleteAllData();
 }

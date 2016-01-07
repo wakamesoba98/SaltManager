@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import net.wakamesoba98.saltmanager.R;
 import net.wakamesoba98.saltmanager.database.DatabaseManager;
+import net.wakamesoba98.saltmanager.database.SodiumData;
 import net.wakamesoba98.saltmanager.database.SodiumDatabase;
 import net.wakamesoba98.saltmanager.util.SodiumConverter;
 
@@ -32,6 +33,8 @@ public class InputActivity extends AppCompatActivity {
     private DateFormat sdf;
     private FocusHolder focusHolder;
     private Calendar calendar;
+    private ActivityMode mode;
+    private int id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,10 +52,29 @@ public class InputActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (intent != null) {
-            String date = intent.getStringExtra("date");
+            String date;
             TextView textDate = (TextView) findViewById(R.id.textViewDate);
-            textDate.setText(date);
 
+            id = intent.getIntExtra("id", -1);
+            if (id != -1) {
+                mode = ActivityMode.EDIT;
+
+                SodiumDatabase database = new SodiumDatabase(this);
+                database.openDatabase();
+                SodiumData data = database.getDataFromId(id);
+                database.closeDatabase();
+
+                date = data.getDate();
+                EditText textFood = (EditText) findViewById(R.id.editTextFood);
+                textFood.setText(data.getFood());
+                textSodium.setText(String.valueOf(data.getSodium()));
+                textSalt.setText(df.format(data.getSalt()));
+            } else {
+                mode = ActivityMode.ADD;
+                date = intent.getStringExtra("date");
+            }
+
+            textDate.setText(date);
             sdf = new SimpleDateFormat(DatabaseManager.DATE_FORMAT, Locale.getDefault());
             calendar = Calendar.getInstance();
             try {
@@ -87,7 +109,6 @@ public class InputActivity extends AppCompatActivity {
             int sodium = SodiumConverter.toSodium(salt);
             textSodium.setText(String.valueOf(sodium));
         } catch (NumberFormatException e) {
-
         }
     }
 
@@ -97,7 +118,6 @@ public class InputActivity extends AppCompatActivity {
             double salt = SodiumConverter.toSalt(sodium);
             textSalt.setText(df.format(salt));
         } catch (NumberFormatException e) {
-
         }
     }
 
@@ -108,10 +128,15 @@ public class InputActivity extends AppCompatActivity {
             int sodium = Integer.parseInt(textSodium.getText().toString());
             String food = textFood.getText().toString();
             String date = sdf.format(calendar.getTime());
+            String[] columns = new String[]{date, food, String.valueOf(sodium)};
 
             SodiumDatabase database = new SodiumDatabase(this);
             database.openDatabase();
-            database.insert(new String[]{date, food, String.valueOf(sodium)});
+            if (mode == ActivityMode.EDIT) {
+                database.update(id, columns);
+            } else {
+                database.insert(columns);
+            }
             database.closeDatabase();
 
             finish();
@@ -175,5 +200,10 @@ public class InputActivity extends AppCompatActivity {
     private enum FocusHolder {
         TEXT_SODIUM,
         TEXT_SALT,
+    }
+
+    private enum ActivityMode {
+        ADD,
+        EDIT,
     }
 }

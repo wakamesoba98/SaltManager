@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_mpandroidchart">MPAndroidChart</string>
+    <string name="title_apache_v2">Apache License Version 2.0</string>
+
+    <string name="license_apache_v2">
+\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0 Apache License\n
+\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0 Version 2.0, January 2004\n
+\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0http://www.apache.org/licenses/\n
+\n
+TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION\n
+\n
+1. Definitions.\n
+\n
+\u00A0\u00A0"License" shall mean the terms and conditions for use, reproduction,\n
+\u00A0\u00A0and distribution as defined by Sections 1 through 9 of this document.\n
+\n
+\u00A0\u00A0"Licensor" shall mean the copyright owner or entity authorized by\n
+\u00A0\u00A0the copyright owner that is granting the License.\n
+\n
+\u00A0\u00A0"Legal Entity" shall mean the union of the acting entity and all\n
+\u00A0\u00A0other entities that control, are controlled by, or are under common\n
+\u00A0\u00A0control with that entity. For the purposes of this definition,\n
+\u00A0\u00A0"control" means (i) the power, direct or indirect, to cause the\n
+\u00A0\u00A0direction or management of such entity, whether by contract or\n
+\u00A0\u00A0otherwise, or (ii) ownership of fifty percent (50%) or more of the\n
+\u00A0\u00A0outstanding shares, or (iii) beneficial ownership of such entity.\n
+\n
+\u00A0\u00A0"You" (or "Your") shall mean an individual or Legal Entity\n
+\u00A0\u00A0exercising permissions granted by this License.\n
+\n
+\u00A0\u00A0"Source" form shall mean the preferred form for making modifications,\n
+\u00A0\u00A0including but not limited to software source code, documentation\n
+\u00A0\u00A0source, and configuration files.\n
+\n
+\u00A0\u00A0"Object" form shall mean any form resulting from mechanical\n
+\u00A0\u00A0transformation or translation of a Source form, including but\n
+\u00A0\u00A0not limited to compiled object code, generated documentation,\n
+\u00A0\u00A0and conversions to other media types.\n
+\n
+\u00A0\u00A0"Work" shall mean the work of authorship, whether in Source or\n
+\u00A0\u00A0Object form, made available under the License, as indicated by a\n
+\u00A0\u00A0copyright notice that is included in or attached to the work\n
+\u00A0\u00A0(an example is provided in the Appendix below).\n
+\n
+\u00A0\u00A0"Derivative Works" shall mean any work, whether in Source or Object\n
+\u00A0\u00A0form, that is based on (or derived from) the Work and for which the\n
+\u00A0\u00A0editorial revisions, annotations, elaborations, or other modifications\n
+\u00A0\u00A0represent, as a whole, an original work of authorship. For the purposes\n
+\u00A0\u00A0of this License, Derivative Works shall not include works that remain\n
+\u00A0\u00A0separable from, or merely link (or bind by name) to the interfaces of,\n
+\u00A0\u00A0the Work and Derivative Works thereof.\n
+\n
+\u00A0\u00A0"Contribution" shall mean any work of authorship, including\n
+\u00A0\u00A0the original version of the Work and any modifications or additions\n
+\u00A0\u00A0to that Work or Derivative Works thereof, that is intentionally\n
+\u00A0\u00A0submitted to Licensor for inclusion in the Work by the copyright owner\n
+\u00A0\u00A0or by an individual or Legal Entity authorized to submit on behalf of\n
+\u00A0\u00A0the copyright owner. For the purposes of this definition, "submitted"\n
+\u00A0\u00A0means any form of electronic, verbal, or written communication sent\n
+\u00A0\u00A0to the Licensor or its representatives, including but not limited to\n
+\u00A0\u00A0communication on electronic mailing lists, source code control systems,\n
+\u00A0\u00A0and issue tracking systems that are managed by, or on behalf of, the\n
+\u00A0\u00A0Licensor for the purpose of discussing and improving the Work, but\n
+\u00A0\u00A0excluding communication that is conspicuously marked or otherwise\n
+\u00A0\u00A0designated in writing by the copyright owner as "Not a Contribution."\n
+\n
+\u00A0\u00A0"Contributor" shall mean Licensor and any individual or Legal Entity\n
+\u00A0\u00A0on behalf of whom a Contribution has been received by Licensor and\n
+\u00A0\u00A0subsequently incorporated within the Work.\n
+\n
+2. Grant of Copyright License. Subject to the terms and conditions of\n
+\u00A0\u00A0this License, each Contributor hereby grants to You a perpetual,\n
+\u00A0\u00A0worldwide, non-exclusive, no-charge, royalty-free, irrevocable\n
+\u00A0\u00A0copyright license to reproduce, prepare Derivative Works of,\n
+\u00A0\u00A0publicly display, publicly perform, sublicense, and distribute the\n
+\u00A0\u00A0Work and such Derivative Works in Source or Object form.\n
+\n
+3. Grant of Patent License. Subject to the terms and conditions of\n
+\u00A0\u00A0this License, each Contributor hereby grants to You a perpetual,\n
+\u00A0\u00A0worldwide, non-exclusive, no-charge, royalty-free, irrevocable\n
+\u00A0\u00A0(except as stated in this section) patent license to make, have made,\n
+\u00A0\u00A0use, offer to sell, sell, import, and otherwise transfer the Work,\n
+\u00A0\u00A0where such license applies only to those patent claims licensable\n
+\u00A0\u00A0by such Contributor that are necessarily infringed by their\n
+\u00A0\u00A0Contribution(s) alone or by combination of their Contribution(s)\n
+\u00A0\u00A0with the Work to which such Contribution(s) was submitted. If You\n
+\u00A0\u00A0institute patent litigation against any entity (including a\n
+\u00A0\u00A0cross-claim or counterclaim in a lawsuit) alleging that the Work\n
+\u00A0\u00A0or a Contribution incorporated within the Work constitutes direct\n
+\u00A0\u00A0or contributory patent infringement, then any patent licenses\n
+\u00A0\u00A0granted to You under this License for that Work shall terminate\n
+\u00A0\u00A0as of the date such litigation is filed.\n
+\n
+4. Redistribution. You may reproduce and distribute copies of the\n
+\u00A0\u00A0Work or Derivative Works thereof in any medium, with or without\n
+\u00A0\u00A0modifications, and in Source or Object form, provided that You\n
+\u00A0\u00A0meet the following conditions:\n
+\n
+\u00A0\u00A0(a) You must give any other recipients of the Work or\n
+\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0Derivative Works a copy of this License; and\n
+\n
+\u00A0\u00A0(b) You must cause any modified files to carry prominent notices\n
+\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0stating that You changed the files; and\n
+\n
+\u00A0\u00A0(c) You must retain, in the Source form of any Derivative Works\n
+\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0that You distribute, all copyright, patent, trademark, and\n
+\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0attribution notices from the Source form of the Work,\n
+\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0excluding those notices that do not pertain to any part of\n
+\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0the Derivative Works; and\n
+\n
+\u00A0\u00A0(d) If the Work includes a "NOTICE" text file as part of its\n
+\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0distribution, then any Derivative Works that You distribute must\n
+\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0include a readable copy of the attribution notices contained\n
+\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0within such NOTICE file, excluding those notices that do not\n
+\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0pertain to any part of the Derivative Works, in at least one\n
+\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0of the following places: within a NOTICE text file distributed\n
+\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0as part of the Derivative Works; within the Source form or\n
+\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0documentation, if provided along with the Derivative Works; or,\n
+\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0within a display generated by the Derivative Works, if and\n
+\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0wherever such third-party notices normally appear. The contents\n
+\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0of the NOTICE file are for informational purposes only and\n
+\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0do not modify the License. You may add Your own attribution\n
+\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0notices within Derivative Works that You distribute, alongside\n
+\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0or as an addendum to the NOTICE text from the Work, provided\n
+\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0that such additional attribution notices cannot be construed\n
+\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0as modifying the License.\n
+\n
+\u00A0\u00A0You may add Your own copyright statement to Your modifications and\n
+\u00A0\u00A0may provide additional or different license terms and conditions\n
+\u00A0\u00A0for use, reproduction, or distribution of Your modifications, or\n
+\u00A0\u00A0for any such Derivative Works as a whole, provided Your use,\n
+\u00A0\u00A0reproduction, and distribution of the Work otherwise complies with\n
+\u00A0\u00A0the conditions stated in this License.\n
+\n
+5. Submission of Contributions. Unless You explicitly state otherwise,\n
+\u00A0\u00A0any Contribution intentionally submitted for inclusion in the Work\n
+\u00A0\u00A0by You to the Licensor shall be under the terms and conditions of\n
+\u00A0\u00A0this License, without any additional terms or conditions.\n
+\u00A0\u00A0Notwithstanding the above, nothing herein shall supersede or modify\n
+\u00A0\u00A0the terms of any separate license agreement you may have executed\n
+\u00A0\u00A0with Licensor regarding such Contributions.\n
+\n
+6. Trademarks. This License does not grant permission to use the trade\n
+\u00A0\u00A0names, trademarks, service marks, or product names of the Licensor,\n
+\u00A0\u00A0except as required for reasonable and customary use in describing the\n
+\u00A0\u00A0origin of the Work and reproducing the content of the NOTICE file.\n
+\n
+7. Disclaimer of Warranty. Unless required by applicable law or\n
+\u00A0\u00A0agreed to in writing, Licensor provides the Work (and each\n
+\u00A0\u00A0Contributor provides its Contributions) on an "AS IS" BASIS,\n
+\u00A0\u00A0WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or\n
+\u00A0\u00A0implied, including, without limitation, any warranties or conditions\n
+\u00A0\u00A0of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A\n
+\u00A0\u00A0PARTICULAR PURPOSE. You are solely responsible for determining the\n
+\u00A0\u00A0appropriateness of using or redistributing the Work and assume any\n
+\u00A0\u00A0risks associated with Your exercise of permissions under this License.\n
+\n
+8. Limitation of Liability. In no event and under no legal theory,\n
+\u00A0\u00A0whether in tort (including negligence), contract, or otherwise,\n
+\u00A0\u00A0unless required by applicable law (such as deliberate and grossly\n
+\u00A0\u00A0negligent acts) or agreed to in writing, shall any Contributor be\n
+\u00A0\u00A0liable to You for damages, including any direct, indirect, special,\n
+\u00A0\u00A0incidental, or consequential damages of any character arising as a\n
+\u00A0\u00A0result of this License or out of the use or inability to use the\n
+\u00A0\u00A0Work (including but not limited to damages for loss of goodwill,\n
+\u00A0\u00A0work stoppage, computer failure or malfunction, or any and all\n
+\u00A0\u00A0other commercial damages or losses), even if such Contributor\n
+\u00A0\u00A0has been advised of the possibility of such damages.\n
+\n
+9. Accepting Warranty or Additional Liability. While redistributing\n
+\u00A0\u00A0the Work or Derivative Works thereof, You may choose to offer,\n
+\u00A0\u00A0and charge a fee for, acceptance of support, warranty, indemnity,\n
+\u00A0\u00A0or other liability obligations and/or rights consistent with this\n
+\u00A0\u00A0License. However, in accepting such obligations, You may act only\n
+\u00A0\u00A0on Your own behalf and on Your sole responsibility, not on behalf\n
+\u00A0\u00A0of any other Contributor, and only if You agree to indemnify,\n
+\u00A0\u00A0defend, and hold each Contributor harmless for any liability\n
+\u00A0\u00A0incurred by, or claims asserted against, such Contributor by reason\n
+\u00A0\u00A0of your accepting any such warranty or additional liability.\n
+    </string>
+
+    <string name="license_mpandroidchart">
+Copyright 2015 Philipp Jahoda\n
+\n
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at\n
+\n
+http://www.apache.org/licenses/LICENSE-2.0\n
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.\n
+    </string>
+</resources>

@@ -9,21 +9,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.DatePicker;
+import android.widget.*;
 import net.wakamesoba98.saltmanager.R;
 import net.wakamesoba98.saltmanager.database.DatabaseManager;
-import net.wakamesoba98.saltmanager.view.fragment.MainFragment;
+import net.wakamesoba98.saltmanager.database.SodiumData;
+import net.wakamesoba98.saltmanager.database.SodiumDatabase;
+import net.wakamesoba98.saltmanager.dialog.ConfirmDialog;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
-
+import java.util.*;
 
 public class MainActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
     public static final int REQUEST_ADD = 1;
-    private MainFragment fragment;
+    private List<SodiumData> sodiumList;
     private Calendar calendar;
     private DateFormat sdf;
 
@@ -32,17 +33,10 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        fragment = new MainFragment();
         if (calendar == null) {
             calendar = Calendar.getInstance();
         }
         sdf = new SimpleDateFormat(DatabaseManager.DATE_FORMAT, Locale.getDefault());
-
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, fragment)
-                    .commit();
-        }
 
         FloatingActionButton button = (FloatingActionButton) findViewById(R.id.fab_add);
         button.setOnClickListener(new View.OnClickListener() {
@@ -55,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         });
 
         setActionBarTitle();
+        loadData();
     }
 
     @Override
@@ -63,15 +58,8 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
         switch (requestCode) {
             case REQUEST_ADD:
-                fragment.loadData(calendar);
+                loadData();
                 break;
-        }
-    }
-
-    public void setActionBarTitle() {
-        ActionBar bar = getSupportActionBar();
-        if (bar != null) {
-            bar.setTitle(sdf.format(calendar.getTime()));
         }
     }
 
@@ -87,16 +75,18 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
         switch (id) {
             case R.id.action_settings:
-                return true;
+                Intent intentPrefs = new Intent(this, PrefsActivity.class);
+                startActivity(intentPrefs);
+                break;
 
             case R.id.action_chart:
-                Intent intent = new Intent(this, ChartActivity.class);
+                Intent intentChart = new Intent(this, ChartActivity.class);
                 Calendar now = Calendar.getInstance();
                 Calendar twoWeekAgo = Calendar.getInstance();
                 twoWeekAgo.add(Calendar.WEEK_OF_MONTH, -1);
-                intent.putExtra("start", sdf.format(twoWeekAgo.getTime()));
-                intent.putExtra("end", sdf.format(now.getTime()));
-                startActivity(intent);
+                intentChart.putExtra("start", sdf.format(twoWeekAgo.getTime()));
+                intentChart.putExtra("end", sdf.format(now.getTime()));
+                startActivity(intentChart);
                 break;
 
             case R.id.action_pick_date:
@@ -105,6 +95,20 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+        calendar.set(year, monthOfYear, dayOfMonth, 0, 0, 0);
+        setActionBarTitle();
+        loadData();
+    }
+
+    public void setActionBarTitle() {
+        ActionBar bar = getSupportActionBar();
+        if (bar != null) {
+            bar.setTitle(sdf.format(calendar.getTime()));
+        }
     }
 
     private void showDatePicker() {
@@ -118,14 +122,67 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         dialog.show();
     }
 
-    @Override
-    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-        calendar.set(year, monthOfYear, dayOfMonth, 0, 0, 0);
-        setActionBarTitle();
-        fragment.loadData(calendar);
-    }
+    public void loadData() {
+        List<Map<String, String>> list = new ArrayList<>();
+        SimpleAdapter adapter = new SimpleAdapter(
+                this,
+                list,
+                android.R.layout.simple_list_item_2,
+                new String[]{"main", "sub"},
+                new int[]{android.R.id.text1, android.R.id.text2}
+        );
 
-    public Calendar getCalendar() {
-        return calendar;
+        DateFormat sdf = new SimpleDateFormat(DatabaseManager.DATE_FORMAT, Locale.getDefault());
+
+        SodiumDatabase database = new SodiumDatabase(this);
+        database.openDatabase();
+        sodiumList = database.getDataFromDate(sdf.format(calendar.getTime()));
+        database.closeDatabase();
+
+        DecimalFormat df = new DecimalFormat("0.00");
+        double total = 0;
+
+        for (SodiumData sodium : sodiumList) {
+            Map<String, String> map = new HashMap<>();
+            map.put("main", df.format(sodium.getSalt()) + " g");
+            map.put("sub", sodium.getFood());
+            list.add(map);
+
+            total += sodium.getSalt();
+        }
+
+        ListView listView = (ListView) findViewById(R.id.listViewData);
+        listView.setAdapter(adapter);
+
+        TextView textView = (TextView) findViewById(R.id.textViewTotalSalt);
+        textView.setText(df.format(total) + " g");
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(MainActivity.this, InputActivity.class);
+                intent.putExtra("id", sodiumList.get(position).getId());
+                startActivityForResult(intent, MainActivity.REQUEST_ADD);
+            }
+        });
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                ConfirmDialog dialog = new ConfirmDialog() {
+                    @Override
+                    public void onPositiveButtonClick() {
+                        SodiumDatabase db = new SodiumDatabase(MainActivity.this);
+                        db.openDatabase();
+                        db.delete(sodiumList.get(position).getId());
+                        db.closeDatabase();
+
+                        loadData();
+                    }
+                };
+                dialog.build(MainActivity.this, R.string.dialog_title_confirm, R.string.dialog_delete_confirm);
+                return true;
+            }
+        });
     }
 }

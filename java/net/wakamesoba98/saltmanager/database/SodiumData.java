@@ -3,17 +3,22 @@ package net.wakamesoba98.saltmanager.database;
 import net.wakamesoba98.saltmanager.util.SodiumConverter;
 
 public class SodiumData {
+    private int id;
     private String date;
     private String food;
     private int sodium;
     private double salt;
 
-    public SodiumData(String date, String food, String sodium) {
-        int sodiumValue = Integer.parseInt(sodium);
+    public SodiumData(int id, String date, String food, int sodium) {
+        this.id = id;
         this.date = date;
         this.food = food;
-        this.sodium = sodiumValue;
-        this.salt = SodiumConverter.toSalt(sodiumValue);
+        this.sodium = sodium;
+        this.salt = SodiumConverter.toSalt(sodium);
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getDate() {

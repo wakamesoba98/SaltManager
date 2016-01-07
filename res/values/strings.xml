@@ -11,5 +11,15 @@
     <string name="label_food">食品名</string>
     <string name="label_sodium">ナトリウム</string>
     <string name="label_salt">食塩相当量</string>
+    <string name="label_stack_salt">食塩量</string>
+    <string name="label_stack_over">目標超過分</string>
     <string name="toast_error">値が不正です。</string>
+    <string name="dialog_positive">OK</string>
+    <string name="dialog_negative">キャンセル</string>
+    <string name="dialog_title_confirm">確認</string>
+    <string name="dialog_delete_confirm">削除しますか？</string>
+    <string name="preference_settings">設定</string>
+    <string name="preference_salt_threshold">食塩量目標値 [g]</string>
+    <string name="preference_about_this_app">このアプリについて</string>
+    <string name="preference_open_source_licenses">オープンソース ライセンス</string>
 </resources>
