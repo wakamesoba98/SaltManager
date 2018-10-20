@@ -13,6 +13,7 @@
     <string name="label_salt">食塩相当量</string>
     <string name="label_stack_salt">食塩量</string>
     <string name="label_stack_over">目標超過分</string>
+    <string name="label_gram">[g]</string>
     <string name="toast_error">値が不正です。</string>
     <string name="dialog_positive">OK</string>
     <string name="dialog_negative">キャンセル</string>

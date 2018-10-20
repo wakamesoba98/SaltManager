@@ -6,10 +6,15 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+
 import net.wakamesoba98.saltmanager.R;
 import net.wakamesoba98.saltmanager.database.DatabaseManager;
 import net.wakamesoba98.saltmanager.database.SodiumData;
@@ -33,14 +38,14 @@ public class ChartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart);
 
-        BarChart chart = (BarChart) findViewById(R.id.chart);
+        BarChart chart = findViewById(R.id.chart);
         chart.getAxisRight().setEnabled(false);
-        chart.getAxisLeft().setStartAtZero(true);
         chart.setDoubleTapToZoomEnabled(false);
         chart.setPinchZoom(false);
-        chart.setDrawValuesForWholeStack(false);
         chart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
-        chart.setDescription("");
+        Description description = new Description();
+        description.setText(getResources().getString(R.string.label_gram));
+        chart.setDescription(description);
 
         PreferenceUtil prefs = new PreferenceUtil(this);
         threshold = prefs.getIntPreference(EnumPrefs.SALT_THRESHOLD);
@@ -100,7 +105,7 @@ public class ChartActivity extends AppCompatActivity {
         return dateSodiumMap;
     }
 
-    private List<BarDataSet> createBarDataSets(List<BarEntry> values) {
+    private List<IBarDataSet> createBarDataSets(List<BarEntry> values) {
         BarDataSet barDataSet = new BarDataSet(values, "");
         barDataSet.setColors(new int[] {
                 ContextCompat.getColor(this, (R.color.accent)),
@@ -110,7 +115,7 @@ public class ChartActivity extends AppCompatActivity {
                 getResources().getString(R.string.label_stack_over),
                 getResources().getString(R.string.label_stack_salt)
         });
-        List<BarDataSet> sets = new ArrayList<>();
+        List<IBarDataSet> sets = new ArrayList<>();
         sets.add(barDataSet);
         return sets;
     }
@@ -137,7 +142,7 @@ public class ChartActivity extends AppCompatActivity {
     }
 
     private void entry(BarChart chart, String start, String end) {
-        List<String> dateList = createDateList(start, end);
+        final List<String> dateList = createDateList(start, end);
         if (dateList == null) {
             return;
         }
@@ -155,21 +160,28 @@ public class ChartActivity extends AppCompatActivity {
             }
             float salt = (float) SodiumConverter.toSalt(sodium);
             if (salt > threshold) {
-                values.add(new BarEntry(new float[]{salt - threshold, threshold}, i));
+                values.add(new BarEntry(i, new float[]{0.0f, threshold, salt - threshold}));
             } else {
-                values.add(new BarEntry(new float[]{0.0f, salt}, i));
+                values.add(new BarEntry(i, new float[]{0.0f, salt, 0.0f}));
             }
-            dummyValues.add(new BarEntry(new float[]{0.0f, 0,0f}, i));
+            dummyValues.add(new BarEntry(i, new float[]{0.0f, 0,0f, 0.0f}));
             if (max < salt) {
                 max = salt;
             }
         }
 
-        BarData data = new BarData(dateList, createBarDataSets(values));
-        BarData dummyData = new BarData(dateList, createBarDataSets(dummyValues));
+        BarData data = new BarData(createBarDataSets(values));
+        BarData dummyData = new BarData(createBarDataSets(dummyValues));
 
-        chart.getAxisLeft().setAxisMaxValue(max + 1.0f);
-        chart.getAxisLeft().setAxisMinValue(0f);
+        chart.getXAxis().setValueFormatter(new IAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                return dateList.get((int)value);
+            }
+        });
+        chart.getXAxis().setLabelRotationAngle(-45f);
+        chart.getAxisLeft().setAxisMaximum(max + 1.0f);
+        chart.getAxisLeft().setAxisMinimum(0f);
         startAnimation(chart, data, dummyData);
     }
 }
