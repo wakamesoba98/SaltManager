@@ -107,14 +107,13 @@ public class ChartActivity extends AppCompatActivity {
 
     private List<IBarDataSet> createBarDataSets(List<BarEntry> values) {
         BarDataSet barDataSet = new BarDataSet(values, "");
-        barDataSet.setColors(new int[] {
-                ContextCompat.getColor(this, (R.color.accent)),
-                ContextCompat.getColor(this, (R.color.primary))
-        });
+        barDataSet.setColors(ContextCompat.getColor(this, (R.color.primary)),
+                             ContextCompat.getColor(this, (R.color.accent)));
         barDataSet.setStackLabels(new String[] {
-                getResources().getString(R.string.label_stack_over),
-                getResources().getString(R.string.label_stack_salt)
+                getResources().getString(R.string.label_stack_salt),
+                getResources().getString(R.string.label_stack_over)
         });
+        barDataSet.setValueFormatter(new StackedValueFormatter2(false, "g", 2));
         List<IBarDataSet> sets = new ArrayList<>();
         sets.add(barDataSet);
         return sets;
@@ -160,11 +159,11 @@ public class ChartActivity extends AppCompatActivity {
             }
             float salt = (float) SodiumConverter.toSalt(sodium);
             if (salt > threshold) {
-                values.add(new BarEntry(i, new float[]{0.0f, threshold, salt - threshold}));
+                values.add(new BarEntry(i, new float[]{threshold, salt - threshold}));
             } else {
-                values.add(new BarEntry(i, new float[]{0.0f, salt, 0.0f}));
+                values.add(new BarEntry(i, new float[]{salt, 0.0f}));
             }
-            dummyValues.add(new BarEntry(i, new float[]{0.0f, 0,0f, 0.0f}));
+            dummyValues.add(new BarEntry(i, new float[]{0.0f, 0.0f}));
             if (max < salt) {
                 max = salt;
             }
@@ -176,7 +175,7 @@ public class ChartActivity extends AppCompatActivity {
         chart.getXAxis().setValueFormatter(new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
-                return dateList.get((int)value);
+                return dateList.get((int) value);
             }
         });
         chart.getXAxis().setLabelRotationAngle(-45f);
